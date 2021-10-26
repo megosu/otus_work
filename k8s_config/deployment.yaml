@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otusapp
+  namespace: otusapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: otusapp
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: otusapp
+    spec:
+      containers:
+        - name: otusapp
+          image: dismay/otusapp:latest
+          ports:
+            - name: web
+              containerPort: 8000

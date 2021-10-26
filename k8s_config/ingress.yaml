@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: otusapp
+  namespace: otusapp
+  annotations:
+    kubernates.io/ingress.class: nginx
+spec:
+  rules:
+    - host: arch.homework
+      http:
+        paths:
+          - backend:
+              service:
+                name: otusapp
+                port:
+                  number: 8000
+            pathType: Prefix
+            path: /
