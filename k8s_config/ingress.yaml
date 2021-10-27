@@ -5,6 +5,7 @@ metadata:
   namespace: otus
   annotations:
     kubernates.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /health
 spec:
   rules:
     - host: arch.homework
@@ -15,5 +16,12 @@ spec:
                 name: otus-srv
                 port:
                   number: 8000
-            pathType: Prefix
-            path: /
+            pathType: Exact
+            path: /health
+          - backend:
+              service:
+                name: otus-srv
+                port:
+                  number: 8000
+            path: /otusapp/(\w+)/(\w+)$
+            pathType: Exact
