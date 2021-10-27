@@ -1,8 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: otus
+  labels:
+    name: otus
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: otusapp
-  namespace: otusapp
+  namespace: otus
 spec:
   replicas: 3
   selector:
