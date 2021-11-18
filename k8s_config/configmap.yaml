@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otus-config
+  namespace: otus
+data:
+  DB_USER: root
+  DB_NAME: otus_db
+  DB_HOST: database-mysql.otus.svc.cluster.local

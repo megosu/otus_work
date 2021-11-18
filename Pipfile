@@ -6,8 +6,12 @@ name = "pypi"
 [packages]
 fastapi = "*"
 uvicorn = "*"
+sqlalchemy = "*"
+pydantic = {extras = ["email"], version = "*"}
+alembic = "*"
+mysqlclient = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"

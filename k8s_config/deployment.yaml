@@ -1,17 +1,10 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: otus
-  labels:
-    name: otus
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: otusapp
   namespace: otus
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: otusapp
@@ -27,7 +20,22 @@ spec:
     spec:
       containers:
         - name: otusapp
-          image: dismay/otusapp:latest
+          image: dismay/otusapp:2
+#          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: otus-config
+            - secretRef:
+                name: otus-secret
           ports:
             - name: web
               containerPort: 8000
+      initContainers:
+        - name: init-otusapp
+          image: dismay/otusapp:2
+          envFrom:
+            - configMapRef:
+                name: otus-config
+            - secretRef:
+                name: otus-secret
+          command: ['alembic', 'upgrade', 'head']
