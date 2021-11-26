@@ -2,6 +2,8 @@ from os import environ
 
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import Response
+from prometheus_client.utils import INF
+from prometheus_fastapi_instrumentator import Instrumentator, metrics
 from sqlalchemy.orm import Session
 from starlette import status
 
@@ -10,6 +12,8 @@ from .models import users as models
 from .models.database import SessionLocal
 
 app = FastAPI()
+instrumentator = Instrumentator()
+instrumentator.instrument(app).expose(app)
 
 
 # Dependency
@@ -34,11 +38,12 @@ def read_root():
 @app.post("/user/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = models.User(username=user.username, first_name=user.first_name, last_name=user.last_name,
-                                        email=user.email, phone=user.phone)
+                          email=user.email, phone=user.phone)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
+
 
 @app.get("/user/{user_id}", response_model=schemas.User)
 def read_user(user_id: int, db: Session = Depends(get_db)):
@@ -61,6 +66,7 @@ def update_user(user_id: int, user: schemas.UserCreate, db: Session = Depends(ge
     db.commit()
     db.refresh(db_user)
     return db_user
+
 
 @app.delete("/user/{user_id}", status_code=204)
 def update_user(user_id: int, db: Session = Depends(get_db)):

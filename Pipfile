@@ -10,6 +10,8 @@ sqlalchemy = "*"
 pydantic = {extras = ["email"], version = "*"}
 alembic = "*"
 mysqlclient = "*"
+prometheus-client = "*"
+prometheus-fastapi-instrumentator = "*"
 
 [dev-packages]
 
